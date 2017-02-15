@@ -14,3 +14,9 @@ class TestStandardSymbolParsing(object):
         assert_is_none(Square.Parse("rabc"))
         assert_is_none(Square.Parse("r3.5"))
 
+    def testRectangle(self):
+        assert_equal(Rectangle(1., 2), Rectangle.Parse("r1x2"))
+        assert_equal(Rectangle(5.1, 3.33), Rectangle.Parse("r5.1x3.33"))
+        assert_is_none(Rectangle.Parse("rabc"))
+        assert_is_none(Rectangle.Parse("r3.5"))
+
