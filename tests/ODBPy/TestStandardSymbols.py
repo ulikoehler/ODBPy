@@ -7,3 +7,10 @@ class TestStandardSymbolParsing(object):
     def testRound(self):
         assert_equal(Round(3.5), Round.Parse("r3.5"))
         assert_is_none(Round.Parse("rabc"))
+        assert_is_none(Round.Parse("s3.5"))
+
+    def testSquare(self):
+        assert_equal(Square(3.5), Square.Parse("s3.5"))
+        assert_is_none(Square.Parse("rabc"))
+        assert_is_none(Square.Parse("r3.5"))
+

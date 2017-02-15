@@ -3,8 +3,6 @@
 import sys
 from setuptools import setup, find_packages
 
-print(find_packages())
-
 setup(name='ODBPy',
       version='0.1',
       description='ODB++ support for Python',

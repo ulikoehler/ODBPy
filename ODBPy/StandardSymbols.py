@@ -19,7 +19,17 @@ class Round(namedtuple("Round", ["diameter"])):
         return Round(float(match.group(1)))
 
 
-Square = namedtuple("Square", ["side"])
+class Square(namedtuple("Square", ["side"])):
+    regex = re.compile(r"s([\.\d]+)")
+
+    @staticmethod
+    def Parse(s):
+        match = Square.regex.match(s)
+        if match is None:
+            return None
+        return Square(float(match.group(1)))
+
+
 Rectangle = namedtuple("Rectangle", ["width", "height"])
 # TODO: Rounded and chamfered rectangle currently not supported
 Oval = namedtuple("Oval", ["width", "height"])
