@@ -9,7 +9,7 @@ from collections import namedtuple
 
 # See ODB++ 7.0 spec page 202
 class Round(namedtuple("Round", ["diameter"])):
-    regex = re.compile(r"r[\.\d]+")
+    regex = re.compile(r"r([\.\d]+)")
 
     @staticmethod
     def Parse(s):
