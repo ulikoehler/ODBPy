@@ -18,7 +18,7 @@ setup(name='ODBPy',
       setup_requires=['nose>=1.0'],
       platforms="any",
       classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'Intended Audience :: Education',
