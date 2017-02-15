@@ -5,5 +5,7 @@ language: python
     - "3.5"
     - "3.6"
 cache: pip
-script: nosetests3
+install:
+    - pip install codecov rednose nose-parameterized codeclimate-test-reporter
+script: python3 setup.py test
 sudo: false
