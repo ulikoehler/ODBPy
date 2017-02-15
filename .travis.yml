@@ -9,3 +9,6 @@ install:
 script: python3 setup.py test
 sudo: false
 dist: trusty
+after_success:
+    - codeclimate-test-reporter --token 8cab09801b7b7a4389e5e7a1dfdb1c724f5facd3dc04a286eca5200d61466c15
+
