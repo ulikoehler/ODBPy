@@ -3,11 +3,22 @@
 """
 ODB++ standard symbol geometries
 """
+import re
 from enum import Enum
 from collections import namedtuple
 
 # See ODB++ 7.0 spec page 202
-Round = namedtuple("Round", ["diameter"])
+class Round(namedtuple("Round", ["diameter"])):
+    regex = re.compile(r"r[\.\d]+")
+
+    @staticmethod
+    def Parse(s):
+        match = Round.regex.match(s)
+        if match is None:
+            return None
+        return Round(float(match.group(1)))
+
+
 Square = namedtuple("Square", ["side"])
 Rectangle = namedtuple("Rectangle", ["width", "height"])
 # TODO: Rounded and chamfered rectangle currently not supported
