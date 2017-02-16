@@ -4,13 +4,17 @@
 Parser for the ODB++ PCB profile file
 """
 import os.path
+from collections import namedtuple
 from .LineRecordParser import *
 from .SurfaceParser import *
 from .PolygonParser import *
 from .Decoder import *
 from .Treeifier import *
+from .Units import *
 
-__all__ = ["read_profile", "parse_profile"]
+__all__ = ["read_profile", "parse_profile", "Profile"]
+
+Profile = namedtuple("Profile", ["unit", "surfaces"])
 
 def read_profile(directory):
     profile = read_linerecords(os.path.join(directory, "steps/pcb/profile"))
@@ -22,4 +26,5 @@ def parse_profile(linerecords):
     treeifyer_rules = surface_treeify_rules + polygon_treeify_rules
 
     decoded = list(run_decoder(linerecords["Layer features"], decoder_options))
-    return treeify(decoded, treeifyer_rules)
+    surfaces = treeify(decoded, treeifyer_rules)
+    return Profile(linerecords_unit(linerecords), surfaces)

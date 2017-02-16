@@ -31,14 +31,14 @@ SE
 class TestProfile(object):
 
     def test_parse_profile(self):
-        expected = [Surface(Polarity.Positive, 0, [
+        expected = Profile("MM", [Surface(Polarity.Positive, 0, [
             Polygon(PolygonType.Island, [
                 PolygonSegment(start=Point(x=-38.104, y=-0.6351), end=Point(x=-38.104, y=19.3649)),
                 PolygonSegment(start=Point(x=-38.104, y=19.3649), end=Point(x=-18.104, y=19.3649)),
                 PolygonSegment(start=Point(x=-18.104, y=19.3649), end=Point(x=-18.104, y=-0.6351)),
                 PolygonSegment(start=Point(x=-18.104, y=-0.6351), end=Point(x=-38.104, y=-0.6351))
             ])
-        ], {})]
+        ], {})])
         actual = parse_profile(read_linerecords(StringIO(testProfile)))
         print(actual)
         assert_equal(expected, actual)
