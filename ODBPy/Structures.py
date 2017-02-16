@@ -7,7 +7,7 @@ from collections import namedtuple
 from enum import Enum
 import numbers
 
-__all__ = ["Point", "Polarity", "polarity_map", "Mirror", "mirror_map"]
+__all__ = ["Point", "Polarity", "polarity_map", "Mirror", "mirror_map", "HolePlating"]
 
 # Named tuples
 class Point(namedtuple("Point", ["x", "y"])):
@@ -59,3 +59,9 @@ mirror_map = {
     "N": Mirror.No,
     "M": Mirror.Mirror
 }
+
+
+class HolePlating(Enum):
+    Plated = 1
+    NonPlated = 2
+    Via = 3

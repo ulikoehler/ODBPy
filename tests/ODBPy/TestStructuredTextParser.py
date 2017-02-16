@@ -4,7 +4,7 @@ from nose.tools import assert_equal, assert_true, assert_false, raises, assert_i
 from ODBPy.StructuredTextParser import *
 from io import StringIO
 
-testStructuredText = """
+testDrillTools = """
 THICKNESS=0
 USER_PARAMS=
 
@@ -53,7 +53,7 @@ class TestStructuredTextParser(object):
                 "DRILL_SIZE": 39.3701
             })
         ])
-        actual = parse_structured_text(StringIO(testStructuredText))
+        actual = parse_structured_text(StringIO(testDrillTools))
         assert_equal(expected, actual)
 
 
