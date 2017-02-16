@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ODB++ standard symbol geometries
+See ODB++ 7.0 spec page 202++
 """
 import re
 from enum import Enum
@@ -16,7 +17,6 @@ def _parse_allfloat(rgx, constr, s):
         return None
     return constr(*map(float, match.groups()))
 
-# See ODB++ 7.0 spec page 202
 class Round(namedtuple("Round", ["diameter"])):
     regex = re.compile(r"r([\.\d]+)")
 
