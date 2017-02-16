@@ -120,6 +120,23 @@ class TestStandardSymbolParsing(object):
     def testHalfOval(self):
         assert_equal(HalfOval(30, 60), HalfOval.Parse("oval_h30x60"))
 
+    def testRoundThermalRounded(self):
+        assert_equal(RoundThermalRounded(60,40,45,4,10),
+            RoundThermalRounded.Parse("thr60x40x45x4x10"))
+
+    def testRoundThermalSquared(self):
+        assert_equal(RoundThermalSquared(60,40,45,4,10),
+            RoundThermalSquared.Parse("ths60x40x45x4x10"))
+
+    def testSquareThermal(self):
+        assert_equal(SquareThermal(60,40,45,4,10),
+            SquareThermal.Parse("s_ths60x40x45x4x10"))
+
+    def testSquareThermalOpenCorners(self):
+        assert_equal(SquareThermalOpenCorners(60,40,45,4,10),
+            SquareThermalOpenCorners.Parse("s_tho60x40x45x4x10"))
+
+
 
 
 

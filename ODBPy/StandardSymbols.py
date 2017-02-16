@@ -110,11 +110,22 @@ Triangle = _standard_symbol_factory("Triangle",
 HalfOval = _standard_symbol_factory("HalfOval",
     r"^oval_h([\.\d]+)x([\.\d]+)$", ["width", "height"], _parse_allfloat)
 
+RoundThermalRounded = _standard_symbol_factory("RoundThermalRounded",
+    r"^thr([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"], _parse_allfloat)
 
-RoundThermalRounded = namedtuple("RoundThermalRounded", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"])
-RoundThermalSquared = namedtuple("RoundThermalSquared", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"])
-SquareThermal = namedtuple("SquareThermal", ["outer_size", "inner_size", "angle", "num_spokes", "gap"])
-SquareThermalOpenCorners = namedtuple("SquareThermalOpenCorners", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"])
+RoundThermalSquared = _standard_symbol_factory("RoundThermalSquared",
+    r"^ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"], _parse_allfloat)
+
+SquareThermal = _standard_symbol_factory("SquareThermal",
+    r"^s_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_size", "inner_size", "angle", "num_spokes", "gap"], _parse_allfloat)
+
+SquareThermalOpenCorners = _standard_symbol_factory("SquareThermalOpenCorners",
+    r"^s_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"], _parse_allfloat)
+
 SquareRoundThermal = namedtuple("SquareRoundThermal", ["outer_size", "inner_diameter", "angle", "num_spokes", "gap"])
 RectangularThermal = namedtuple("RectangularThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"])
 RectangularThermalOpenCorners = namedtuple("RectangularThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"])
@@ -128,11 +139,5 @@ OvalThermalOpenCorners = namedtuple("OvalThermalOpenCorners", ["outer_width", "o
 Ellipse = namedtuple("Ellipse", ["width", "height"])
 
 Moire = namedtuple("Moire", ["ring_width", "ring_gap", "num_rings", "line_width", "line_length", "line_angle"])
-
-
-class HolePlating(Enum):
-    Plated = 1
-    NonPlated = 2
-    Via = 3
 
 Hole = namedtuple("Hole", ["diameter", "plating", "tolerance_plus", "tolerance_minus"])
