@@ -13,7 +13,7 @@ class TestStandardSymbolParsing(object):
     def testSquare(self):
         assert_equal(Square(40.), Square.Parse("s40"))
         assert_equal(Square(3.5), Square.Parse("s3.5"))
-        assert_is_none(Square.Parse("rabc"))
+        assert_is_none(Square.Parse("sabc"))
         assert_is_none(Square.Parse("r3.5"))
 
     def testRectangle(self):
@@ -22,4 +22,12 @@ class TestStandardSymbolParsing(object):
         assert_equal(Rectangle(5.1, 3.33), Rectangle.Parse("r5.1x3.33"))
         assert_is_none(Rectangle.Parse("rabc"))
         assert_is_none(Rectangle.Parse("r3.5"))
+
+    def testOval(self):
+        assert_equal(Oval(60., 30.), Oval.Parse("oval60x30"))
+        assert_equal(Oval(1., 2), Oval.Parse("oval1x2"))
+        assert_equal(Oval(5.1, 3.33), Oval.Parse("oval5.1x3.33"))
+        assert_is_none(Rectangle.Parse("ovalabc"))
+        assert_is_none(Rectangle.Parse("oval3.5"))
+
 
