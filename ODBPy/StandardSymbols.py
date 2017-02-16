@@ -8,6 +8,7 @@ import re
 from enum import Enum
 from collections import namedtuple
 import functools
+from .Structures import HolePlating
 
 def _parse_allfloat(rgx, constr, s):
     """
@@ -158,11 +159,36 @@ RoundedRectangleThermalOpenCorners = _standard_symbol_factory("RoundedRectangleT
     ["outer_width", "outer_height", "line_width", "angle", "num_spokes", "gap", "corner_radius", "corners"],
     _parse_allfloat_corners)
 
-OvalThermal = namedtuple("OvalThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"])
-OvalThermalOpenCorners = namedtuple("OvalThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"])
+OvalThermal = _standard_symbol_factory("OvalThermal",
+    r"^o_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"], _parse_allfloat)
 
-Ellipse = namedtuple("Ellipse", ["width", "height"])
+OvalThermalOpenCorners = _standard_symbol_factory("OvalThermalOpenCorners",
+    r"^o_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"], _parse_allfloat)
 
-Moire = namedtuple("Moire", ["ring_width", "ring_gap", "num_rings", "line_width", "line_length", "line_angle"])
 
-Hole = namedtuple("Hole", ["diameter", "plating", "tolerance_plus", "tolerance_minus"])
+Ellipse = _standard_symbol_factory("Ellipse",
+    r"^el([\.\d]+)x([\.\d]+)$", ["width", "height"], _parse_allfloat)
+
+Moire = _standard_symbol_factory("Moire",
+    r"^moire([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["ring_width", "ring_gap", "num_rings", "line_width", "line_length", "line_angle"], _parse_allfloat)
+
+
+_plating_map = {
+    "p": HolePlating.Plated,
+    "n": HolePlating.NonPlated,
+    "v": HolePlating.Via,
+}
+
+class Hole(namedtuple("Hole", ["diameter", "plating", "tolerance_plus", "tolerance_minus"])):
+    regex = re.compile(r"^hole([\.\d]+)x([pnv])x([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        match = Hole.regex.match(s)
+        if match is None:
+            return None
+        a, platingStr, b, c = match.groups()
+        return Hole(float(a), _plating_map[platingStr], float(b), float(c))

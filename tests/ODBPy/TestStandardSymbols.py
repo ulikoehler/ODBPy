@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from nose.tools import assert_equal, assert_true, raises, assert_is_none
 from ODBPy.StandardSymbols import *
+from ODBPy.Structures import HolePlating
 
 class TestStandardSymbolParsing(object):
     def testRound(self):
@@ -164,6 +165,28 @@ class TestStandardSymbolParsing(object):
         assert_equal(RoundedRectangleThermalOpenCorners(10,7,90,4,2,1,2,[1,2,3,4]),
             RoundedRectangleThermalOpenCorners.Parse("rc_tho10x7x90x4x2x1xr2"))
 
+    def testOvalThermal(self):
+        assert_equal(OvalThermal(5,3,.5,90,4,1),
+            OvalThermal.Parse("o_ths5x3x0.5x90x4x1"))
+
+    def testOvalThermalOpenCorners(self):
+        assert_equal(OvalThermalOpenCorners(5,3,.5,90,4,1),
+            OvalThermalOpenCorners.Parse("o_tho5x3x0.5x90x4x1"))
+
+    def testEllipse(self):
+        assert_equal(Ellipse(30, 60), Ellipse.Parse("el30x60"))
+
+    def testMoire(self):
+        assert_equal(Moire(5,10,4,4,100,0),
+            Moire.Parse("moire5x10x4x4x100x0"))
+
+    def testHole(self):
+        assert_equal(Hole(50,HolePlating.Plated,4,5),
+            Hole.Parse("hole50xpx4x5"))
+        assert_equal(Hole(50,HolePlating.NonPlated,4,5),
+            Hole.Parse("hole50xnx4x5"))
+        assert_equal(Hole(50,HolePlating.Via,4,5),
+            Hole.Parse("hole50xvx4x5"))
 
 
 
