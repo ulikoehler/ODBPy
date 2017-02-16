@@ -139,18 +139,25 @@ RectangularThermalOpenCorners = _standard_symbol_factory("RectangularThermalOpen
     ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"], _parse_allfloat)
 
 RoundedSquareThermal = _standard_symbol_factory("RoundedSquareThermal",
-    r"^rc_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    r"^s_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
     ["outer_size", "inner_size", "angle", "num_spokes", "gap", "corner_radius", "corners"],
     _parse_allfloat_corners)
 
 RoundedSquareThermalOpenCorners = _standard_symbol_factory("RoundedSquareThermalOpenCorners",
-    r"^rc_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    r"^s_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
     ["outer_size", "inner_size", "angle", "num_spokes", "gap", "corner_radius", "corners"],
     _parse_allfloat_corners)
 
+RoundedRectangleThermal = _standard_symbol_factory("RoundedRectangleThermal",
+    r"^rc_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_width", "outer_height", "line_width", "angle", "num_spokes", "gap", "corner_radius", "corners"],
+    _parse_allfloat_corners)
 
-RoundedRectangleThermal = namedtuple("RoundedRectangleThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "corner_radius", "corners"])
-RoundedRectangleThermalOpenCorners = namedtuple("RoundedRectangleThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "corner_radius", "corners"])
+RoundedRectangleThermalOpenCorners = _standard_symbol_factory("RoundedRectangleThermalOpenCorners",
+    r"^rc_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_width", "outer_height", "line_width", "angle", "num_spokes", "gap", "corner_radius", "corners"],
+    _parse_allfloat_corners)
+
 OvalThermal = namedtuple("OvalThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"])
 OvalThermalOpenCorners = namedtuple("OvalThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"])
 
