@@ -27,7 +27,20 @@ class TestStandardSymbolParsing(object):
         assert_equal(Oval(60., 30.), Oval.Parse("oval60x30"))
         assert_equal(Oval(1., 2), Oval.Parse("oval1x2"))
         assert_equal(Oval(5.1, 3.33), Oval.Parse("oval5.1x3.33"))
-        assert_is_none(Rectangle.Parse("ovalabc"))
-        assert_is_none(Rectangle.Parse("oval3.5"))
+        assert_is_none(Oval.Parse("ovalabc"))
+        assert_is_none(Oval.Parse("oval3.5"))
 
+    def testDiamond(self):
+        assert_equal(Diamond(60., 30.), Diamond.Parse("di60x30"))
+        assert_equal(Diamond(1., 2), Diamond.Parse("di1x2"))
+        assert_equal(Diamond(5.1, 3.33), Diamond.Parse("di5.1x3.33"))
+        assert_is_none(Diamond.Parse("diabc"))
+        assert_is_none(Diamond.Parse("di3.5"))
 
+    def testOctagon(self):
+        assert_equal(Octagon(60., 60., 20.), Octagon.Parse("oct60x60x20"))
+        assert_equal(Octagon(60., 30., 20.), Octagon.Parse("oct60x30x20"))
+        assert_equal(Octagon(1., 2.0, 3.0), Octagon.Parse("oct1.0x2.0x3.0"))
+        assert_equal(Octagon(5.1, 3.33, 61.2), Octagon.Parse("oct5.1x3.33x61.2"))
+        assert_is_none(Octagon.Parse("oct60x60"))
+        assert_is_none(Octagon.Parse("oval3.5"))

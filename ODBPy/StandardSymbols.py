@@ -7,23 +7,14 @@ import re
 from enum import Enum
 from collections import namedtuple
 
-def _parse_onearg(rgx, constr, s):
+def _parse_allfloat(rgx, constr, s):
     """
     Parse a string using a regex yielding one group
     """
     match = rgx.match(s)
     if match is None:
         return None
-    return constr(float(match.group(1)))
-
-def _parse_twoarg(rgx, constr, s):
-    """
-    Parse a string using a regex yielding two groups
-    """
-    match = rgx.match(s)
-    if match is None:
-        return None
-    return constr(float(match.group(1)), float(match.group(2)))
+    return constr(*map(float, match.groups()))
 
 # See ODB++ 7.0 spec page 202
 class Round(namedtuple("Round", ["diameter"])):
@@ -31,7 +22,7 @@ class Round(namedtuple("Round", ["diameter"])):
 
     @staticmethod
     def Parse(s):
-        return _parse_onearg(Round.regex, Round, s)
+        return _parse_allfloat(Round.regex, Round, s)
 
 
 class Square(namedtuple("Square", ["side"])):
@@ -39,7 +30,7 @@ class Square(namedtuple("Square", ["side"])):
 
     @staticmethod
     def Parse(s):
-        return _parse_onearg(Square.regex, Square, s)
+        return _parse_allfloat(Square.regex, Square, s)
 
 
 class Rectangle(namedtuple("Rectangle", ["width", "height"])):
@@ -47,19 +38,33 @@ class Rectangle(namedtuple("Rectangle", ["width", "height"])):
 
     @staticmethod
     def Parse(s):
-        return _parse_twoarg(Rectangle.regex, Rectangle, s)
+        return _parse_allfloat(Rectangle.regex, Rectangle, s)
 
 # TODO: Rounded and chamfered rectangle currently not supported
 
 class Oval(namedtuple("Oval", ["width", "height"])):
-    regex = re.compile(r"r([\.\d]+)x([\.\d]+)")
+    regex = re.compile(r"oval([\.\d]+)x([\.\d]+)")
 
     @staticmethod
     def Parse(s):
-        return _parse_twoarg(Oval.regex, Oval, s)
+        return _parse_allfloat(Oval.regex, Oval, s)
 
-Diamond = namedtuple("Diamond", ["width", "height"])
-Octagon = namedtuple("Octagon", ["width", "height", "corner_size"])
+class Diamond(namedtuple("Diamond", ["width", "height"])):
+    regex = re.compile(r"di([\.\d]+)x([\.\d]+)")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(Diamond.regex, Diamond, s)
+
+
+class Octagon(namedtuple("Octagon", ["width", "height", "corner_size"])):
+    regex = re.compile(r"oct([\.\d]+)x([\.\d]+)x([\.\d]+)")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(Octagon.regex, Octagon, s)
+
+
 RoundDonut = namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"])
 SquareDonut = namedtuple("SquareDonut", ["outer_diameter", "inner_diameter"])
 # New in v7.0
