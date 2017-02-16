@@ -44,3 +44,11 @@ class TestStandardSymbolParsing(object):
         assert_equal(Octagon(5.1, 3.33, 61.2), Octagon.Parse("oct5.1x3.33x61.2"))
         assert_is_none(Octagon.Parse("oct60x60"))
         assert_is_none(Octagon.Parse("oval3.5"))
+
+
+    def testSquare(self):
+        assert_equal(RoundDonut(60, 30), RoundDonut.Parse("donut_r60x30"))
+        assert_equal(RoundDonut(3.5, 2.5), RoundDonut.Parse("donut_r3.5x2.5"))
+        assert_is_none(RoundDonut.Parse("donut1x2"))
+        assert_is_none(RoundDonut.Parse("r3.5"))
+        assert_is_none(RoundDonut.Parse("donut_r1x2x3"))

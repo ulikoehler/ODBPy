@@ -18,7 +18,7 @@ def _parse_allfloat(rgx, constr, s):
     return constr(*map(float, match.groups()))
 
 class Round(namedtuple("Round", ["diameter"])):
-    regex = re.compile(r"r([\.\d]+)")
+    regex = re.compile(r"^r([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
@@ -26,7 +26,7 @@ class Round(namedtuple("Round", ["diameter"])):
 
 
 class Square(namedtuple("Square", ["side"])):
-    regex = re.compile(r"s([\.\d]+)")
+    regex = re.compile(r"^s([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
@@ -34,7 +34,7 @@ class Square(namedtuple("Square", ["side"])):
 
 
 class Rectangle(namedtuple("Rectangle", ["width", "height"])):
-    regex = re.compile(r"r([\.\d]+)x([\.\d]+)")
+    regex = re.compile(r"^r([\.\d]+)x([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
@@ -43,14 +43,14 @@ class Rectangle(namedtuple("Rectangle", ["width", "height"])):
 # TODO: Rounded and chamfered rectangle currently not supported
 
 class Oval(namedtuple("Oval", ["width", "height"])):
-    regex = re.compile(r"oval([\.\d]+)x([\.\d]+)")
+    regex = re.compile(r"^oval([\.\d]+)x([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
         return _parse_allfloat(Oval.regex, Oval, s)
 
 class Diamond(namedtuple("Diamond", ["width", "height"])):
-    regex = re.compile(r"di([\.\d]+)x([\.\d]+)")
+    regex = re.compile(r"^di([\.\d]+)x([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
@@ -58,14 +58,19 @@ class Diamond(namedtuple("Diamond", ["width", "height"])):
 
 
 class Octagon(namedtuple("Octagon", ["width", "height", "corner_size"])):
-    regex = re.compile(r"oct([\.\d]+)x([\.\d]+)x([\.\d]+)")
+    regex = re.compile(r"^oct([\.\d]+)x([\.\d]+)x([\.\d]+)$")
 
     @staticmethod
     def Parse(s):
         return _parse_allfloat(Octagon.regex, Octagon, s)
 
+class RoundDonut(namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"])):
+    regex = re.compile(r"^donut_r([\.\d]+)x([\.\d]+)$")
 
-RoundDonut = namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"])
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(RoundDonut.regex, RoundDonut, s)
+
 SquareDonut = namedtuple("SquareDonut", ["outer_diameter", "inner_diameter"])
 # New in v7.0
 SquareRoundDonut = namedtuple("SquareRoundDonut", ["outer_diameter", "inner_diameter"])
