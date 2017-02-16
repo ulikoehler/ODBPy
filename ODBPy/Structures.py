@@ -16,17 +16,20 @@ class Point(namedtuple("Point", ["x", "y"])):
             return Point(self.x + op, self.y + op)
         if isinstance(op, Point):
             return Point(self.x + op.x, self.y + op.y)
+
     def __sub__(self, op):
         if isinstance(op, numbers.Number):
             return Point(self.x - op, self.y - op)
         if isinstance(op, Point):
             return Point(self.x - op.x, self.y - op.y)
+
     def __mul__(self, op):
         if isinstance(op, numbers.Number):
             return Point(self.x * op, self.y * op)
         if isinstance(op, Point):
             return Point(self.x * op.x, self.y * op.y)
-    def __div__(self, op):
+
+    def __truediv__(self, op):
         if isinstance(op, numbers.Number):
             return Point(self.x / op, self.y / op)
         if isinstance(op, Point):
