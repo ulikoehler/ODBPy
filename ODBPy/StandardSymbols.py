@@ -120,12 +120,38 @@ class RectangleDonut(namedtuple("RectangleDonut", ["outer_diameter", "inner_diam
     def Parse(s):
         return _parse_allfloat(RectangleDonut.regex, RectangleDonut, s)
 
-# New in v7.0
-RoundedRectangleDonut = namedtuple("RoundedRectangleDonut", ["outer_width", "outer_height", "line_width", "corner_radius", "corners"])
-OvalDonut = namedtuple("OvalDonut", ["outer_width", "outer_height", "line_width"])
 
-HorizontalHexagon = namedtuple("HorizontalHexagon", ["width", "height", "corner_size"])
-VerticalHexagon = namedtuple("VerticalHexagon", ["width", "height", "corner_size"])
+class RoundedRectangleDonut(namedtuple("RoundedRectangleDonut", ["outer_diameter", "inner_diameter", "line_width", "corner_radius", "corners"])):
+    regex = re.compile(r"^donut_rc([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat_corners(RoundedRectangleDonut.regex, RoundedRectangleDonut, s)
+
+
+class OvalDonut(namedtuple("OvalDonut", ["outer_diameter", "inner_diameter", "line_width"])):
+    regex = re.compile(r"^donut_o([\.\d]+)x([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(OvalDonut.regex, OvalDonut, s)
+
+
+class HorizontalHexagon(namedtuple("HorizontalHexagon", ["width", "height", "corner_size"])):
+    regex = re.compile(r"^hex_l([\.\d]+)x([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(HorizontalHexagon.regex, HorizontalHexagon, s)
+
+
+class VerticalHexagon(namedtuple("VerticalHexagon", ["width", "height", "corner_size"])):
+    regex = re.compile(r"^hex_s([\.\d]+)x([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(VerticalHexagon.regex, VerticalHexagon, s)
+
 
 Butterfly = namedtuple("Butterfly", ["diameter"])
 SquareButterfly = namedtuple("SquareButterfly", ["size"])

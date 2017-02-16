@@ -80,5 +80,35 @@ class TestStandardSymbolParsing(object):
         assert_is_none(RectangleDonut.Parse("donut_rc1x2x3x4"))
         assert_is_none(RectangleDonut.Parse("r3.5"))
 
+    def testRoundedRectangleDonut(self):
+        assert_equal(RoundedRectangleDonut(10, 7, 1, 2, [1,2,3,4]), RoundedRectangleDonut.Parse("donut_rc10x7x1xr2"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_rc1x2"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_rc1x2x3"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_rc1x2x3x4x"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_rc1x2x3x4x5"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_rc1x2x3x4x5x6"))
+        assert_is_none(RoundedRectangleDonut.Parse("r3.5"))
+        assert_is_none(RoundedRectangleDonut.Parse("donut_s1x2x3"))
+
+    def testOvalDonut(self):
+        assert_equal(OvalDonut(5, 3, .5), OvalDonut.Parse("donut_o5x3x0.5"))
+        assert_is_none(OvalDonut.Parse("donut_o1x2"))
+        assert_is_none(OvalDonut.Parse("donut_o1x2x3x4"))
+        assert_is_none(OvalDonut.Parse("r3.5"))
+
+    def testHorizontalHexagon(self):
+        assert_equal(HorizontalHexagon(60, 60, 20), HorizontalHexagon.Parse("hex_l60x60x20"))
+        assert_is_none(HorizontalHexagon.Parse("hex_l1x2"))
+        assert_is_none(HorizontalHexagon.Parse("hex_l1x2x3x4"))
+        assert_is_none(HorizontalHexagon.Parse("r3.5"))
+
+    def testVerticalHexagon(self):
+        assert_equal(VerticalHexagon(60, 60, 20), VerticalHexagon.Parse("hex_s60x60x20"))
+        assert_is_none(VerticalHexagon.Parse("hex_s1x2"))
+        assert_is_none(VerticalHexagon.Parse("hex_s1x2x3x4"))
+        assert_is_none(VerticalHexagon.Parse("r3.5"))
+
+
+
 
 
