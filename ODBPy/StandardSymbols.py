@@ -126,11 +126,29 @@ SquareThermalOpenCorners = _standard_symbol_factory("SquareThermalOpenCorners",
     r"^s_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
     ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"], _parse_allfloat)
 
-SquareRoundThermal = namedtuple("SquareRoundThermal", ["outer_size", "inner_diameter", "angle", "num_spokes", "gap"])
-RectangularThermal = namedtuple("RectangularThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"])
-RectangularThermalOpenCorners = namedtuple("RectangularThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"])
-RoundedSquareThermal = namedtuple("RoundedSquareThermal", ["outer_size", "inner_size", "angle", "num_spokes", "gap", "corner_radius", "corners"])
-RoundedSquareThermalOpenCorners = namedtuple("RoundedSquareThermalOpenCorners", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap", "rad", "corners"])
+SquareRoundThermal = _standard_symbol_factory("SquareRoundThermal",
+    r"^sr_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_size", "inner_diameter", "angle", "num_spokes", "gap"], _parse_allfloat)
+
+RectangularThermal = _standard_symbol_factory("RectangularThermal",
+    r"^rc_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"], _parse_allfloat)
+
+RectangularThermalOpenCorners = _standard_symbol_factory("RectangularThermalOpenCorners",
+    r"^rc_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_width", "outer_height", "angle", "num_spokes", "gap", "air_gap"], _parse_allfloat)
+
+RoundedSquareThermal = _standard_symbol_factory("RoundedSquareThermal",
+    r"^rc_ths([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_size", "inner_size", "angle", "num_spokes", "gap", "corner_radius", "corners"],
+    _parse_allfloat_corners)
+
+RoundedSquareThermalOpenCorners = _standard_symbol_factory("RoundedSquareThermalOpenCorners",
+    r"^rc_tho([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_size", "inner_size", "angle", "num_spokes", "gap", "corner_radius", "corners"],
+    _parse_allfloat_corners)
+
+
 RoundedRectangleThermal = namedtuple("RoundedRectangleThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "corner_radius", "corners"])
 RoundedRectangleThermalOpenCorners = namedtuple("RoundedRectangleThermalOpenCorners", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "corner_radius", "corners"])
 OvalThermal = namedtuple("OvalThermal", ["outer_width", "outer_height", "angle", "num_spokes", "gap", "line_width"])

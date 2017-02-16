@@ -136,11 +136,25 @@ class TestStandardSymbolParsing(object):
         assert_equal(SquareThermalOpenCorners(60,40,45,4,10),
             SquareThermalOpenCorners.Parse("s_tho60x40x45x4x10"))
 
+    def testSquareRoundThermal(self):
+        assert_equal(SquareRoundThermal(60,40,45,4,10),
+            SquareRoundThermal.Parse("sr_ths60x40x45x4x10"))
 
+    def testRectangularThermal(self):
+        assert_equal(RectangularThermal(60,40,45,4,10,10),
+            RectangularThermal.Parse("rc_ths60x40x45x4x10x10"))
 
+    def testRectangularThermalOpenCorners(self):
+        assert_equal(RectangularThermalOpenCorners(60,40,45,4,10,10),
+            RectangularThermalOpenCorners.Parse("rc_tho60x40x45x4x10x10"))
 
+    def testRoundedSquareThermal(self):
+        assert_equal(RoundedSquareThermal(40,30,90,4,4,4,[1,2,3,4]),
+            RoundedSquareThermal.Parse("rc_ths40x30x90x4x4xr4"))
 
-
+    def testRoundedSquareThermalOpenCorners(self):
+        assert_equal(RoundedSquareThermalOpenCorners(40,30,90,4,4,4,[1,2,3,4]),
+            RoundedSquareThermalOpenCorners.Parse("rc_tho40x30x90x4x4xr4"))
 
 
 
