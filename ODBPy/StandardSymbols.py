@@ -7,16 +7,31 @@ import re
 from enum import Enum
 from collections import namedtuple
 
+def _parse_onearg(rgx, constr, s):
+    """
+    Parse a string using a regex yielding one group
+    """
+    match = rgx.match(s)
+    if match is None:
+        return None
+    return constr(float(match.group(1)))
+
+def _parse_twoarg(rgx, constr, s):
+    """
+    Parse a string using a regex yielding two groups
+    """
+    match = rgx.match(s)
+    if match is None:
+        return None
+    return constr(float(match.group(1)), float(match.group(2)))
+
 # See ODB++ 7.0 spec page 202
 class Round(namedtuple("Round", ["diameter"])):
     regex = re.compile(r"r([\.\d]+)")
 
     @staticmethod
     def Parse(s):
-        match = Round.regex.match(s)
-        if match is None:
-            return None
-        return Round(float(match.group(1)))
+        return _parse_onearg(Round.regex, Round, s)
 
 
 class Square(namedtuple("Square", ["side"])):
@@ -24,10 +39,7 @@ class Square(namedtuple("Square", ["side"])):
 
     @staticmethod
     def Parse(s):
-        match = Square.regex.match(s)
-        if match is None:
-            return None
-        return Square(float(match.group(1)))
+        return _parse_onearg(Square.regex, Square, s)
 
 
 class Rectangle(namedtuple("Rectangle", ["width", "height"])):
@@ -35,13 +47,17 @@ class Rectangle(namedtuple("Rectangle", ["width", "height"])):
 
     @staticmethod
     def Parse(s):
-        match = Rectangle.regex.match(s)
-        if match is None:
-            return None
-        return Rectangle(float(match.group(1)), float(match.group(2)))
+        return _parse_twoarg(Rectangle.regex, Rectangle, s)
 
 # TODO: Rounded and chamfered rectangle currently not supported
-Oval = namedtuple("Oval", ["width", "height"])
+
+class Oval(namedtuple("Oval", ["width", "height"])):
+    regex = re.compile(r"r([\.\d]+)x([\.\d]+)")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_twoarg(Oval.regex, Oval, s)
+
 Diamond = namedtuple("Diamond", ["width", "height"])
 Octagon = namedtuple("Octagon", ["width", "height", "corner_size"])
 RoundDonut = namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"])
