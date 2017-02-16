@@ -16,8 +16,8 @@ def parse_attributes_from_line(line):
     Example:
         parse_attributes_from_line("P -30.9595 3.8107 0 P 0 8 0;0=0,2=0") => {0: 0, 2: 0}
     """
-    attribute_str = line.rpartition(";")[2].strip()
-    return parse_attributes(attribute_str)
+    attribute_str = line.partition(";")[2].strip()
+    return parse_attributes(attribute_str) if attribute_str else {}
 
 def parse_attributes(attribute_str):
     """
