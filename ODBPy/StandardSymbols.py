@@ -10,12 +10,30 @@ from collections import namedtuple
 
 def _parse_allfloat(rgx, constr, s):
     """
-    Parse a string using a regex yielding one group
+    Parse a string using a regex yielding only floats group
     """
     match = rgx.match(s)
     if match is None:
         return None
     return constr(*map(float, match.groups()))
+
+def _parse_allfloat_corners(rgx, constr, s):
+    """
+    Parse a string using a regex yielding only floats group,
+    with the exception of the last group, being an optional corner
+    group containing a list of corners
+    """
+    match = rgx.match(s)
+    if match is None:
+        return None
+    groups = match.groups()
+    cornersStr = groups[-1] if groups[-1] is not None else "1234"
+    corners = [int(c) for c in cornersStr if c.isdigit()]
+    args = list(map(float, groups[:-1]))
+    args.append(corners)
+    print(args)
+    return constr(*args)
+
 
 class Round(namedtuple("Round", ["diameter"])):
     regex = re.compile(r"^r([\.\d]+)$")
@@ -87,9 +105,14 @@ class SquareRoundDonut(namedtuple("SquareRoundDonut", ["outer_diameter", "inner_
     def Parse(s):
         return _parse_allfloat(SquareRoundDonut.regex, SquareRoundDonut, s)
 
+class RoundedSquareDonut(namedtuple("RoundedSquareDonut", ["outer_diameter", "inner_diameter", "corner_radius", "corners"])):
+    regex = re.compile(r"^donut_s([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat_corners(RoundedSquareDonut.regex, RoundedSquareDonut, s)
 
 # New in v7.0
-RoundedSquareDonut = namedtuple("RoundedSquareDonut", ["outer_diameter", "inner_diameter", "corner_radius", "corners"])
 RectangleDonut = namedtuple("RectangleDonut", ["outer_width", "outer_height", "line_width"])
 RoundedRectangleDonut = namedtuple("RoundedRectangleDonut", ["outer_width", "outer_height", "line_width", "corner_radius", "corners"])
 OvalDonut = namedtuple("OvalDonut", ["outer_width", "outer_height", "line_width"])
