@@ -63,19 +63,3 @@ def read_drill_tools(odbpath):
     "Read the drill tools from a given ODB++ directory"
     stext = read_structured_text(os.path.join(odbpath, "steps/pcb/layers/through_drill/tools"))
     return parse_drill_tools(stext)
-
-if __name__ == "__main__":
-    #Parse commandline arguments
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("directory", help="The ODB directory")
-    args = parser.parse_args()
-    #Perform check
-    toolset = read_drill_tools(args.directory)
-    print("Metadata:")
-    for k, v in toolset.metadata.items():
-        print("\t{} = {}".format(k, v))
-
-    print("\nTools:")
-    for tool in toolset.tools.values():
-        print("\t{}".format(tool))
