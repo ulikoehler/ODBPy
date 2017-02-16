@@ -10,7 +10,7 @@ The result can then be used in the treeifier.
 """
 from collections import namedtuple
 
-__all__ = ["run_decoder", "DecoderOption"]
+__all__ = ["run_decoder", "run_decoder_on_line", "DecoderOption"]
 
 class DecoderOption(namedtuple("DecoderOption", ["regex", "function"])):
     """
@@ -25,7 +25,7 @@ class DecoderOption(namedtuple("DecoderOption", ["regex", "function"])):
         match = self.regex.search(line)
         return self.function(match) if match is not None else None
 
-def _run_decoder_on_line(line, opts):
+def run_decoder_on_line(line, opts):
     """
     Run a decoder on a line and return a tag or None
     """
@@ -38,4 +38,4 @@ def _run_decoder_on_line(line, opts):
         return None
 
 def run_decoder(lines, opts):
-    return (_run_decoder_on_line(line, opts) for line in lines)
+    return (run_decoder_on_line(line, opts) for line in lines)
