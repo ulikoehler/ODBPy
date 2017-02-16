@@ -9,6 +9,7 @@ from .Decoder import DecoderOption
 from .Treeifier import TreeifierRule
 from .PolygonParser import Polygon
 from .Structures import Polarity, polarity_map
+from .Attributes import parse_attributes
 
 __all__ = ["surface_decoder_options",
            "SurfaceBeginTag", "surface_treeify_rules",
