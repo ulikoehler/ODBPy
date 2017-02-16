@@ -7,6 +7,7 @@ See ODB++ 7.0 spec page 202++
 import re
 from enum import Enum
 from collections import namedtuple
+import functools
 
 def _parse_allfloat(rgx, constr, s):
     """
@@ -27,130 +28,86 @@ def _parse_allfloat_corners(rgx, constr, s):
     if match is None:
         return None
     groups = match.groups()
+    # Treat last group separately
     cornersStr = groups[-1] if groups[-1] is not None else "1234"
     corners = [int(c) for c in cornersStr if c.isdigit()]
+    # Assemble args list
     args = list(map(float, groups[:-1]))
     args.append(corners)
     print(args)
     return constr(*args)
 
 
-class Round(namedtuple("Round", ["diameter"])):
-    regex = re.compile(r"^r([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Round.regex, Round, s)
-
-
-class Square(namedtuple("Square", ["side"])):
-    regex = re.compile(r"^s([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Square.regex, Square, s)
+def _standard_symbol_factory(name, regex, field_names, parsefunc):
+    """
+    Generates a new standard symbol container class
+    (derived from namedtuple) from a matcher regex,
+    a list of fields and one of the _parse_... parsers
+    from this module
+    """
+    _cls = namedtuple(name, field_names)
+    _cls.regex = re.compile(regex)
+    _cls.Parse = functools.partial(parsefunc, _cls.regex, _cls)
+    return _cls
 
 
-class Rectangle(namedtuple("Rectangle", ["width", "height"])):
-    regex = re.compile(r"^r([\.\d]+)x([\.\d]+)$")
+#class Round(namedtuple("Round", )):
+#    regex = re.compile()
+#
+#    @staticmethod
+#    def Parse(s):
+#        return _parse_allfloat(Round.regex, Round, s)
+Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
+Square = _standard_symbol_factory("Square", r"^s([\.\d]+)$", ["side"], _parse_allfloat)
 
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Rectangle.regex, Rectangle, s)
+Rectangle = _standard_symbol_factory("Rectangle", r"^r([\.\d]+)x([\.\d]+)$",
+    ["width", "height"], _parse_allfloat)
+
+Oval = _standard_symbol_factory("Oval", r"^oval([\.\d]+)x([\.\d]+)$", ["width", "height"], _parse_allfloat)
+
+Diamond = _standard_symbol_factory("Diamond",
+    r"^di([\.\d]+)x([\.\d]+)$", ["width", "height"], _parse_allfloat)
+
+Octagon = _standard_symbol_factory("Octagon",
+    r"^oct([\.\d]+)x([\.\d]+)x([\.\d]+)$", ["width", "height", "corner_size"], _parse_allfloat)
 
 # TODO: Rounded and chamfered rectangle currently not supported
+RoundDonut = _standard_symbol_factory("RoundDonut",
+    r"^donut_r([\.\d]+)x([\.\d]+)$", ["outer_diameter", "inner_diameter"], _parse_allfloat)
 
-class Oval(namedtuple("Oval", ["width", "height"])):
-    regex = re.compile(r"^oval([\.\d]+)x([\.\d]+)$")
+SquareDonut = _standard_symbol_factory("SquareDonut",
+    r"^donut_s([\.\d]+)x([\.\d]+)$", ["outer_diameter", "inner_diameter"], _parse_allfloat)
 
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Oval.regex, Oval, s)
+SquareRoundDonut = _standard_symbol_factory("SquareRoundDonut",
+    r"^donut_sr([\.\d]+)x([\.\d]+)$", ["outer_diameter", "inner_diameter"], _parse_allfloat)
 
-class Diamond(namedtuple("Diamond", ["width", "height"])):
-    regex = re.compile(r"^di([\.\d]+)x([\.\d]+)$")
+RoundedSquareDonut = _standard_symbol_factory("RoundedSquareDonut",
+    r"^donut_s([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_diameter", "inner_diameter", "corner_radius", "corners"], _parse_allfloat_corners)
 
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Diamond.regex, Diamond, s)
+RectangleDonut = _standard_symbol_factory("RectangleDonut",
+    r"^donut_rc([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_diameter", "inner_diameter", "line_width"], _parse_allfloat)
 
+RoundedRectangleDonut = _standard_symbol_factory("RoundedRectangleDonut",
+    r"^donut_rc([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$",
+    ["outer_diameter", "inner_diameter", "line_width", "corner_radius", "corners"], _parse_allfloat_corners)
 
-class Octagon(namedtuple("Octagon", ["width", "height", "corner_size"])):
-    regex = re.compile(r"^oct([\.\d]+)x([\.\d]+)x([\.\d]+)$")
+OvalDonut = _standard_symbol_factory("OvalDonut",
+    r"^donut_o([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["outer_diameter", "inner_diameter", "line_width"], _parse_allfloat)
 
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(Octagon.regex, Octagon, s)
+HorizontalHexagon = _standard_symbol_factory("HorizontalHexagon",
+    r"^hex_l([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["width", "height", "corner_size"], _parse_allfloat)
 
-class RoundDonut(namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"])):
-    regex = re.compile(r"^donut_r([\.\d]+)x([\.\d]+)$")
+VerticalHexagon = _standard_symbol_factory("VerticalHexagon",
+    r"^hex_s([\.\d]+)x([\.\d]+)x([\.\d]+)$",
+    ["width", "height", "corner_size"], _parse_allfloat)
 
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(RoundDonut.regex, RoundDonut, s)
+Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
+Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
 
-
-class SquareDonut(namedtuple("SquareDonut", ["outer_diameter", "inner_diameter"])):
-    regex = re.compile(r"^donut_s([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(SquareDonut.regex, SquareDonut, s)
-
-
-class SquareRoundDonut(namedtuple("SquareRoundDonut", ["outer_diameter", "inner_diameter"])):
-    regex = re.compile(r"^donut_sr([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(SquareRoundDonut.regex, SquareRoundDonut, s)
-
-class RoundedSquareDonut(namedtuple("RoundedSquareDonut", ["outer_diameter", "inner_diameter", "corner_radius", "corners"])):
-    regex = re.compile(r"^donut_s([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat_corners(RoundedSquareDonut.regex, RoundedSquareDonut, s)
-
-
-class RectangleDonut(namedtuple("RectangleDonut", ["outer_diameter", "inner_diameter", "line_width"])):
-    regex = re.compile(r"^donut_rc([\.\d]+)x([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(RectangleDonut.regex, RectangleDonut, s)
-
-
-class RoundedRectangleDonut(namedtuple("RoundedRectangleDonut", ["outer_diameter", "inner_diameter", "line_width", "corner_radius", "corners"])):
-    regex = re.compile(r"^donut_rc([\.\d]+)x([\.\d]+)x([\.\d]+)xr([\.\d]+)(x[\.\d]+)?$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat_corners(RoundedRectangleDonut.regex, RoundedRectangleDonut, s)
-
-
-class OvalDonut(namedtuple("OvalDonut", ["outer_diameter", "inner_diameter", "line_width"])):
-    regex = re.compile(r"^donut_o([\.\d]+)x([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(OvalDonut.regex, OvalDonut, s)
-
-
-class HorizontalHexagon(namedtuple("HorizontalHexagon", ["width", "height", "corner_size"])):
-    regex = re.compile(r"^hex_l([\.\d]+)x([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(HorizontalHexagon.regex, HorizontalHexagon, s)
-
-
-class VerticalHexagon(namedtuple("VerticalHexagon", ["width", "height", "corner_size"])):
-    regex = re.compile(r"^hex_s([\.\d]+)x([\.\d]+)x([\.\d]+)$")
-
-    @staticmethod
-    def Parse(s):
-        return _parse_allfloat(VerticalHexagon.regex, VerticalHexagon, s)
 
 
 Butterfly = namedtuple("Butterfly", ["diameter"])
