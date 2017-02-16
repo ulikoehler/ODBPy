@@ -32,6 +32,7 @@ def parse_structured_text(lines):
     arrays = []
     current_array = None
     for line in lines:
+        line = line.strip()
         # Parse key/value line
         if "=" in line:
             k, _, v = line.partition("=")
