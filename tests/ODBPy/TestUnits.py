@@ -3,7 +3,7 @@
 from nose.tools import assert_equal, assert_true, assert_almost_equal, assert_false, raises, assert_is_none
 from ODBPy.Units import *
 
-class TestUtils(object):
+class TestUnits(object):
     def test_to_mm(self):
         assert_almost_equal(25.4, to_mm(1.0, "in"))
         assert_almost_equal(25.4, to_mm(1.0, "In"))
@@ -31,3 +31,13 @@ class TestUtils(object):
         assert_almost_equal(0.001, to_inch(1.0, "mil"), 4)
         assert_almost_equal(0.0000393701, to_inch(1.0, "um"), 4)
 
+    def test_linerecords_unit(self):
+        assert_equal("MM", linerecords_unit({"Units": ["U MM"]}))
+
+    @raises(ValueError)
+    def test_linerecords_unit_toomany(self):
+        assert_equal("MM", linerecords_unit({"Units": ["U MM", "U IN"]}))
+
+    @raises(ValueError)
+    def test_linerecords_unit_wrongformat(self):
+        assert_equal("MM", linerecords_unit({"Units": ["UBAR"]}))
