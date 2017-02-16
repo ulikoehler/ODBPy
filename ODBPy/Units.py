@@ -5,7 +5,7 @@ ODB++ unit utilities
 """
 import re
 
-__all__ = ["linerecords_unit", "to_mm", "to_mil", "to_micrometers", "to_inches"]
+__all__ = ["linerecords_unit", "to_mm", "to_mil", "to_micrometers", "to_inch"]
 
 _unit_line_re = re.compile(r"U\s+([A-Z]+)")
 
@@ -32,7 +32,7 @@ _mm_factors = {
 
 def to_mm(value, from_unit):
     """Convert a value in unit <from_unit> to mm"""
-    return value * from_unit[_mm_factors]
+    return value * _mm_factors[from_unit.upper()]
 
 def to_mil(value, from_unit):
     """Convert a value in unit <from_unit> to mil"""
@@ -42,6 +42,6 @@ def to_micrometers(value, from_unit):
     """Convert a value in unit <from_unit> to mirometers"""
     return to_mm(value, from_unit) / _mm_factors["UM"]
 
-def to_inches(value, from_unit):
+def to_inch(value, from_unit):
     """Convert a value in unit <from_unit> to inches"""
     return to_mm(value, from_unit) / _mm_factors["IN"]
