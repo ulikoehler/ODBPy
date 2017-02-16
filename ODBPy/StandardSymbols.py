@@ -71,9 +71,24 @@ class RoundDonut(namedtuple("RoundDonut", ["outer_diameter", "inner_diameter"]))
     def Parse(s):
         return _parse_allfloat(RoundDonut.regex, RoundDonut, s)
 
-SquareDonut = namedtuple("SquareDonut", ["outer_diameter", "inner_diameter"])
+
+class SquareDonut(namedtuple("SquareDonut", ["outer_diameter", "inner_diameter"])):
+    regex = re.compile(r"^donut_s([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(SquareDonut.regex, SquareDonut, s)
+
+
+class SquareRoundDonut(namedtuple("SquareRoundDonut", ["outer_diameter", "inner_diameter"])):
+    regex = re.compile(r"^donut_sr([\.\d]+)x([\.\d]+)$")
+
+    @staticmethod
+    def Parse(s):
+        return _parse_allfloat(SquareRoundDonut.regex, SquareRoundDonut, s)
+
+
 # New in v7.0
-SquareRoundDonut = namedtuple("SquareRoundDonut", ["outer_diameter", "inner_diameter"])
 RoundedSquareDonut = namedtuple("RoundedSquareDonut", ["outer_diameter", "inner_diameter", "corner_radius", "corners"])
 RectangleDonut = namedtuple("RectangleDonut", ["outer_width", "outer_height", "line_width"])
 RoundedRectangleDonut = namedtuple("RoundedRectangleDonut", ["outer_width", "outer_height", "line_width", "corner_radius", "corners"])
