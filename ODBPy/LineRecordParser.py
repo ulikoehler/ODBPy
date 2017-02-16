@@ -18,9 +18,12 @@ def filter_line_record_lines(lines):
 
 def read_raw_linerecords(filename):
     "Read a .Z line record file and return only important lines in order"
-    open_fn = readZIPFileLines if filename.endswith(".Z") else readFileLines
-    return filter_line_record_lines(
-        open_fn(filename))
+    try: # Assume file-like object
+        return filter_line_record_lines(filename.read().split("\n"))
+    except AttributeError:
+        open_fn = readZIPFileLines if filename.endswith(".Z") else readFileLines
+        return filter_line_record_lines(
+            open_fn(filename))
 
 def group_by_section(lines):
     "Group a line record file by the section. Returns a dict containing lists."
