@@ -68,12 +68,17 @@ class TestStandardSymbolParsing(object):
         assert_is_none(SquareRoundDonut.Parse("r3.5"))
         assert_is_none(SquareRoundDonut.Parse("donut_s1x2x3"))
 
-
     def testRoundedSquareDonut(self):
         assert_equal(RoundedSquareDonut(10, 8, 2, [1,2,3,4]), RoundedSquareDonut.Parse("donut_s10x8xr2"))
         assert_is_none(RoundedSquareDonut.Parse("donut_r1x2"))
         assert_is_none(RoundedSquareDonut.Parse("r3.5"))
         assert_is_none(RoundedSquareDonut.Parse("donut_s1x2x3"))
+
+    def testRectangleDonut(self):
+        assert_equal(RectangleDonut(8, 6, 1), RectangleDonut.Parse("donut_rc8x6x1"))
+        assert_is_none(RectangleDonut.Parse("donut_rc1x2"))
+        assert_is_none(RectangleDonut.Parse("donut_rc1x2x3x4"))
+        assert_is_none(RectangleDonut.Parse("r3.5"))
 
 
 
