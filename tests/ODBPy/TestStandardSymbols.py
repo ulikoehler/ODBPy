@@ -108,6 +108,23 @@ class TestStandardSymbolParsing(object):
         assert_is_none(VerticalHexagon.Parse("hex_s1x2x3x4"))
         assert_is_none(VerticalHexagon.Parse("r3.5"))
 
+    def testButterfly(self):
+        assert_equal(Butterfly(60), Butterfly.Parse("bfr60"))
+
+    def testSquareButterfly(self):
+        assert_equal(SquareButterfly(60), SquareButterfly.Parse("bfs60"))
+
+    def testTriangle(self):
+        assert_equal(Triangle(30, 60), Triangle.Parse("tri30x60"))
+
+    def testHalfOval(self):
+        assert_equal(HalfOval(30, 60), HalfOval.Parse("oval_h30x60"))
+
+
+
+
+
+
 
 
 

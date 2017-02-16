@@ -50,13 +50,6 @@ def _standard_symbol_factory(name, regex, field_names, parsefunc):
     _cls.Parse = functools.partial(parsefunc, _cls.regex, _cls)
     return _cls
 
-
-#class Round(namedtuple("Round", )):
-#    regex = re.compile()
-#
-#    @staticmethod
-#    def Parse(s):
-#        return _parse_allfloat(Round.regex, Round, s)
 Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
 Square = _standard_symbol_factory("Square", r"^s([\.\d]+)$", ["side"], _parse_allfloat)
 
@@ -105,16 +98,18 @@ VerticalHexagon = _standard_symbol_factory("VerticalHexagon",
     r"^hex_s([\.\d]+)x([\.\d]+)x([\.\d]+)$",
     ["width", "height", "corner_size"], _parse_allfloat)
 
-Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
-Round = _standard_symbol_factory("Round", r"^r([\.\d]+)$", ["diameter"], _parse_allfloat)
+Butterfly = _standard_symbol_factory("Butterfly",
+    r"^bfr([\.\d]+)$", ["diameter"], _parse_allfloat)
 
+SquareButterfly = _standard_symbol_factory("SquareButterfly",
+    r"^bfs([\.\d]+)$", ["size"], _parse_allfloat)
 
+Triangle = _standard_symbol_factory("Triangle",
+    r"^tri([\.\d]+)x([\.\d]+)$", ["base", "height"], _parse_allfloat)
 
-Butterfly = namedtuple("Butterfly", ["diameter"])
-SquareButterfly = namedtuple("SquareButterfly", ["size"])
+HalfOval = _standard_symbol_factory("HalfOval",
+    r"^oval_h([\.\d]+)x([\.\d]+)$", ["width", "height"], _parse_allfloat)
 
-Triangle = namedtuple("Triangle", ["base", "height"])
-HalfOval = namedtuple("HalfOval", ["width", "height"])
 
 RoundThermalRounded = namedtuple("RoundThermalRounded", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"])
 RoundThermalSquared = namedtuple("RoundThermalSquared", ["outer_diameter", "inner_diameter", "angle", "num_spokes", "gap"])
