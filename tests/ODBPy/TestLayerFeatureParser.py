@@ -20,7 +20,17 @@ class TestLayerFeatureParser(object):
         assert_equal(expected, self._parse_pad("P -30.9595 3.8107 0 P 0 8 0;0=0,2=0"))
 
     def test_parse_pad_stddoc(self):
-        """Test parsing pads from the ODB++ specification"""
+        """Test parsing pads from the ODB++ specification, v7.0 p. 113"""
         assert_equal(Pad(Point(1., 2.), SymbolReference(0, 1.0),
             Polarity.Positive, 4, Mirror.No, 90, {}),
             self._parse_pad("P 1.0 2.0 0 P 4 1"))
+        assert_equal(Pad(Point(1., 2.), SymbolReference(0, 1.0),
+            Polarity.Positive, 4, Mirror.No, 30, {}),
+            self._parse_pad("P 1.0 2.0 0 P 4 8 30.0"))
+        assert_equal(Pad(Point(1., 2.), SymbolReference(0, 0.02),
+            Polarity.Positive, 4, Mirror.No, 90, {}),
+            self._parse_pad("P 1.0 2.0 -1 0 0.02 P 4 1"))
+        assert_equal(Pad(Point(1., 2.), SymbolReference(0, 0.02),
+            Polarity.Positive, 4, Mirror.No, 30, {}),
+            self._parse_pad("P 1.0 2.0 -1 0 0.02 P 4 8 30.0"))
+
