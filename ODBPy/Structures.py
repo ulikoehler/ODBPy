@@ -7,7 +7,8 @@ from collections import namedtuple
 from enum import Enum
 import numbers
 
-__all__ = ["Point", "Polarity", "polarity_map", "Mirror", "mirror_map", "HolePlating"]
+__all__ = ["Point", "Polarity", "polarity_map", "Mirror",
+    "mirror_map", "HolePlating", "SymbolReference"]
 
 # Named tuples
 class Point(namedtuple("Point", ["x", "y"])):
@@ -65,3 +66,13 @@ class HolePlating(Enum):
     Plated = 1
     NonPlated = 2
     Via = 3
+
+_SymbolReference = namedtuple("SymbolReference", ["symcode", "resize_factor"])
+
+class SymbolReference(_SymbolReference):
+    """
+    A numeric reference to a symbol stored elsewhere,
+    with an optional resize factor
+    """
+    def __init__(self, symnum, resize_factor=1.0):
+        _SymbolReference.__init__(symnum, resize_factor)

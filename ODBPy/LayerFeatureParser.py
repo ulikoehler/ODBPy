@@ -9,6 +9,7 @@ from collections import namedtuple
 from .Decoder import DecoderOption, run_decoder
 from .Structures import Mirror, Point, polarity_map
 from .Attributes import parse_attributes
+from .Structures import SymbolReference
 import re
 
 # See http://www.odb-sa.com/wp-content/uploads/ODB_Format_Description_v7.pdf p. 112
@@ -16,8 +17,7 @@ _pad_re = re.compile(r"^P\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(\d+|-1\s+\d+\s+-?[\.\d]
 # _pad_re.match('P -35.7225 2.064 0 P 0 8 0;0=2,1=0')
 _line_re = re.compile(r"^L\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(\d+)\s+([PN])\s+(\d+)(;\s*.+?)?$")
 
-SymbolReference = namedtuple("SymbolReference", ["symcode", "resize_factor"])
-Pad = namedtuple("Pad", ["coords", "symbol", "polarity", "dcode", "mirror", "attributes"])
+Pad = namedtuple("Pad", ["coords", "symbol", "polarity", "dcode", "mirror", "angle", "attributes"])
 Line = namedtuple("Line", ["start", "end", "symbol", "polarity", "dcode", "attributes"])
 
 _orientation_old_to_new_lut = {
@@ -64,7 +64,7 @@ def _parse_pad(match):
     # Create return object
     return Pad(Point(float(x), float(y)),
                aptref, polarity_map[polarity],
-               int(dcode), mirror, attributes)
+               int(dcode), mirror, orient_angle, attributes)
 
 
 _features_decoder_options = [
