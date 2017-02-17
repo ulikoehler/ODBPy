@@ -39,8 +39,11 @@ _orientation_mirror_lut = { # Old values are converted to 8 or 9
 def _parse_line(match):
     "Parse a line regex match"
     xs, ys, xe, ye, symnum, polarity, dcode, attributes = match.groups()
+    # Parse attributes
+    attributes = parse_attributes(attributes[1:]) \
+                 if attributes is not None else {}
     return Line(Point(float(xs), float(ys)), Point(float(xe), float(ye)),
-                SymbolReference(symnum, 1.0), polarity_map[polarity],
+                SymbolReference(int(symnum), 1.0), polarity_map[polarity],
                 int(dcode), attributes)
 
 def _parse_pad(match):
