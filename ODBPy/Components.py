@@ -9,7 +9,7 @@ from .Decoder import *
 from .Treeifier import *
 from .Units import *
 
-Components = namedtuple("Components", ["top", "bottom"])
+Components = namedtuple("Components", ["top", "bot"])
 
 def read_components(directory):
     top_components = read_linerecords(os.path.join(directory, "steps/pcb/layers/comp_+_top/components.Z"))
