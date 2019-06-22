@@ -63,7 +63,10 @@ class Mirror(Enum):
 
 mirror_map = {
     "N": Mirror.No,
-    "M": Mirror.Mirror
+    "M": Mirror.Mirror,
+    "Y": Mirror.MirrorY,
+    "X": Mirror.MirrorX,
+    "XY": Mirror.MirrorXY,
 }
 
 class HolePlating(Enum):

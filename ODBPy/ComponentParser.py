@@ -14,8 +14,8 @@ __all__ = ["components_decoder_options", "parse_components",
 
 _prp_re = re.compile(r"^PRP\s+(\S+)\s+'([^']+)'\s*$") # Property record
 # _prp_re.search("PRP Name 'EEUFR1H470'")
-_top_re = re.compile(r"^TOP\s+(\d+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+([NM])\s+(\d+)\s+(\d+)\s+(\S+)\s*$") # Toeprint record
-_cmp_re = re.compile(r"^CMP\s+(\d+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+([NM])\s+(\S+)\s+(\S+)\s*(;\s*.+?)?$") # component record
+_top_re = re.compile(r"^TOP\s+(\d+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(N|M|X|Y|XY)\s+(\d+)\s+(\d+)\s+(\S+)\s*$") # Toeprint record
+_cmp_re = re.compile(r"^CMP\s+(\d+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(-?[\.\d]+)\s+(N|M|X|Y|XY)\s+(\S+)\s+(\S+)\s*(;\s*.+?)?$") # component record
 
 ComponentRecordTag = namedtuple("ComponentRecordTag",[
         "package_ref", "location", "rotation", "mirror", "name", "part_name", "attributes"])
@@ -73,8 +73,8 @@ def _parse_cmp(match):
         Point(float(x), float(y)),
         float(rot),
         mirror_map[mirror],
-        try_parse_number(name),
-        try_parse_number(part_name),
+        try_parse_number(name.strip()),
+        try_parse_number(part_name.strip()),
         attributes
     )
 
@@ -99,6 +99,7 @@ def parse_components(components):
         component_name_to_id(name): consolidate_component_tags(
             list(run_decoder(component, components_decoder_options)))
         for name, component in components.items()
+        if name is not None
     }
 
 def map_components_by_name(components):
